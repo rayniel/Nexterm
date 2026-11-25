@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build a local Nexterm all-in-one image from this checkout.
 # Usage: ./build-local.sh [tag]   (default: nexterm-remix:latest)
-# Env:   ENGINE_IMAGE  prebuilt engine image to reuse (default: nexterm/engine:latest)
+# Env:   ENGINE_IMAGE  prebuilt engine image to reuse (default: nexterm/engine:development)
 #        BUILD_ENGINE=1 build the engine from source instead (slow)
 #        PLATFORM       e.g. linux/amd64 (default: host platform)
 #        APK_MIRROR     Alpine mirror, e.g. https://mirrors.aliyun.com
@@ -11,7 +11,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 TAG="${1:-nexterm-remix:latest}"
-ENGINE_IMAGE="${ENGINE_IMAGE:-nexterm/engine:latest}"
+ENGINE_IMAGE="${ENGINE_IMAGE:-nexterm/engine:development}"
 SERVER_IMAGE="nexterm-remix-server:local"
 VERSION="$(sed -n 's/.*"version": *"\([^"]*\)".*/\1/p' package.json | head -n1)"
 PLATFORM_ARGS=()

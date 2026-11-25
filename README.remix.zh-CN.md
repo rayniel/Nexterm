@@ -28,9 +28,11 @@ cd Nexterm
 
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
-| `ENGINE_IMAGE` | `nexterm/engine:latest` | 复用的预构建 engine 镜像 |
+| `ENGINE_IMAGE` | `nexterm/engine:development` | 复用的预构建 engine 镜像 |
 | `BUILD_ENGINE` | `0` | 设为 `1` 时从源码构建 engine（见下） |
 | `PLATFORM` | 本机平台 | 如 `linux/amd64`、`linux/arm64` |
+
+> `main` 跟随上游开发版，必须使用匹配的 `nexterm/engine:development`；`latest` 是旧的发布版，缺少 `nexterm-webview` 等文件，会导致 `COPY --from=engine ... not found`。
 
 ### BUILD_ENGINE=1 怎么设置
 
