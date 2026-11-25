@@ -1,4 +1,8 @@
-const { createCanvas, loadImage } = require("@napi-rs/canvas");
+// Lazy-loaded: the native Skia binary needs AVX and crashes (SIGILL) on CPUs without it, e.g. QEMU default vCPU.
+let canvasLib;
+const getCanvasLib = () => (canvasLib ||= require("@napi-rs/canvas"));
+const createCanvas = (...args) => getCanvasLib().createCanvas(...args);
+const loadImage = (...args) => getCanvasLib().loadImage(...args);
 const GuacdClient = require("../GuacdClient");
 const SessionManager = require("../SessionManager");
 const controlPlane = require("../controlPlane/ControlPlaneServer");
