@@ -63,6 +63,8 @@ ENGINE_IMAGE=myrepo/engine:custom ./build-local.sh
 ```bash
 APK_MIRROR=https://mirrors.aliyun.com NPM_REGISTRY=https://registry.npmmirror.com ./build-local.sh
 ```n
+`NPM_REGISTRY` 会同时改写 `yarn.lock` 里写死的 `registry.yarnpkg.com` 下载地址（仅构建时，不改仓库文件）。
+
 注意：加 `sudo` 时环境变量要写在 sudo 后面：`sudo APK_MIRROR=... NPM_REGISTRY=... ./build-local.sh`。
 从源码构建 engine 时还会从 `archive.mesa3d.org` 和 GitHub 下载源码包，无法换源，必要时给 Docker 配代理。
 
