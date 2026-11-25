@@ -1,4 +1,6 @@
 FROM node:26-alpine AS client-builder
+ARG NPM_REGISTRY=
+RUN if [ -n "$NPM_REGISTRY" ]; then echo "registry=$NPM_REGISTRY" > /root/.npmrc && echo "registry \"$NPM_REGISTRY\"" > /root/.yarnrc; fi
 
 RUN npm install -g yarn
 
@@ -16,6 +18,10 @@ RUN yarn build
 
 
 FROM node:26-alpine AS schema-builder
+ARG APK_MIRROR=
+RUN if [ -n "$APK_MIRROR" ]; then sed -Ei "s#https?://dl-cdn.alpinelinux.org#$APK_MIRROR#g" /etc/apk/repositories; fi
+ARG NPM_REGISTRY=
+RUN if [ -n "$NPM_REGISTRY" ]; then echo "registry=$NPM_REGISTRY" > /root/.npmrc && echo "registry \"$NPM_REGISTRY\"" > /root/.yarnrc; fi
 
 WORKDIR /app
 
@@ -33,6 +39,10 @@ RUN mkdir -p server/lib/generated && \
 
 
 FROM node:26-alpine AS server-builder
+ARG APK_MIRROR=
+RUN if [ -n "$APK_MIRROR" ]; then sed -Ei "s#https?://dl-cdn.alpinelinux.org#$APK_MIRROR#g" /etc/apk/repositories; fi
+ARG NPM_REGISTRY=
+RUN if [ -n "$NPM_REGISTRY" ]; then echo "registry=$NPM_REGISTRY" > /root/.npmrc && echo "registry \"$NPM_REGISTRY\"" > /root/.yarnrc; fi
 
 ARG VERSION
 
@@ -61,6 +71,8 @@ COPY --from=schema-builder /app/server/lib/generated/ server/lib/generated/
 
 
 FROM alpine:3.24
+ARG APK_MIRROR=
+RUN if [ -n "$APK_MIRROR" ]; then sed -Ei "s#https?://dl-cdn.alpinelinux.org#$APK_MIRROR#g" /etc/apk/repositories; fi
 
 RUN apk add --no-cache libstdc++ libgcc libatomic
 

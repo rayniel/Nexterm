@@ -56,6 +56,16 @@ export BUILD_ENGINE=1
 ENGINE_IMAGE=myrepo/engine:custom ./build-local.sh
 ```
 
+### 国内网络加速（换源）
+
+构建慢或卡在 `apk add` / `yarn install` 时，可指定镜像源（作用于 Dockerfile 所有阶段）：
+
+```bash
+APK_MIRROR=https://mirrors.aliyun.com NPM_REGISTRY=https://registry.npmmirror.com ./build-local.sh
+```n
+注意：加 `sudo` 时环境变量要写在 sudo 后面：`sudo APK_MIRROR=... NPM_REGISTRY=... ./build-local.sh`。
+从源码构建 engine 时还会从 `archive.mesa3d.org` 和 GitHub 下载源码包，无法换源，必要时给 Docker 配代理。
+
 ## 运行
 
 ```bash

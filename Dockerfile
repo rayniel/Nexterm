@@ -3,6 +3,8 @@ ARG ENGINE_IMAGE=nexterm/engine:latest
 
 FROM ${ENGINE_IMAGE} AS engine
 FROM ${SERVER_IMAGE}
+ARG APK_MIRROR=
+RUN if [ -n "$APK_MIRROR" ]; then sed -Ei "s#https?://dl-cdn.alpinelinux.org#$APK_MIRROR#g" /etc/apk/repositories; fi
 
 RUN apk add --no-cache \
     cairo jpeg libpng ossp-uuid \
