@@ -694,6 +694,10 @@ const XtermRenderer = ({ session, disconnectFromServer, reconnectSession, reconn
 
         term.onData((data) => {
             if (isAutomated) return;
+            if (suggestionRef.current) {
+                suggestionActionsRef.current.editSuggestionQuery?.((query) => query + data);
+                return;
+            }
             if (passwordPromptRef.current) hidePasswordHint();
             ws.send(data);
 
@@ -747,6 +751,8 @@ const XtermRenderer = ({ session, disconnectFromServer, reconnectSession, reconn
 
                 const activeSuggestion = suggestionRef.current;
                 if (activeSuggestion) {
+                    if (event.isComposing || event.keyCode === 229) return true;
+
                     const actions = suggestionActionsRef.current;
                     const commands = activeSuggestion.commands;
 

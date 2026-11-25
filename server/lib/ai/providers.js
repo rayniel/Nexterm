@@ -42,7 +42,7 @@ const fetchOpenAICompatibleModels = async (baseUrl, apiKey) => {
 
 const buildOpenAICompatibleModel = async (name, baseUrl, apiKey, model) => {
     const { createOpenAICompatible } = await import("@ai-sdk/openai-compatible");
-    const provider = createOpenAICompatible({ name, baseURL: normalizeUrl(baseUrl), apiKey: apiKey || "" });
+    const provider = createOpenAICompatible({ name, baseURL: normalizeUrl(baseUrl), apiKey: apiKey || "", supportsStructuredOutputs: name === "openai_compatible" });
     return provider(model);
 };
 
@@ -257,7 +257,7 @@ const REGISTRY = {
     deepseek: compatibleProvider({ id: "deepseek", label: "DeepSeek", fixedBaseUrl: "https://api.deepseek.com/v1" }),
     xai: compatibleProvider({ id: "xai", label: "xAI (Grok)", fixedBaseUrl: "https://api.x.ai/v1" }),
     openrouter: compatibleProvider({ id: "openrouter", label: "OpenRouter", fixedBaseUrl: "https://openrouter.ai/api/v1" }),
-    openai_compatible: compatibleProvider({ id: "openai_compatible", label: "OpenAI Compatible", userBaseUrl: true }),
+    openai_compatible: compatibleProvider({ id: "openai_compatible", label: "OpenAI Compatible", userBaseUrl: true, requiresApiKey: false }),
     ollama: ollamaProvider,
 };
 
